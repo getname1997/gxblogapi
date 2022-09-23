@@ -1,5 +1,4 @@
 // 声明表实体
-
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('posts')

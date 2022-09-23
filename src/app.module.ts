@@ -3,6 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostsModule } from './posts/posts.module';
+import { PostsEntity } from './posts/posts.entity';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -10,9 +12,9 @@ import { PostsModule } from './posts/posts.module';
       host: '175.24.115.95',
       port: 3306,
       username: 'root',
-      password: '',
+      password: '123321.q',
       database: 'blog',
-      entities: ['dist/**/*.entity{.ts,.js}'],
+      entities: [PostsEntity],
       synchronize: true,
     }),
     PostsModule,
