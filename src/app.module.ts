@@ -10,7 +10,7 @@ import { PostsModule } from './posts/posts.module';
       host: '175.24.115.95',
       port: 3306,
       username: 'root',
-      password: '123321.q',
+      password: '',
       database: 'blog',
       entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: true,
