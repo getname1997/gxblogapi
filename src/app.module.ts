@@ -7,6 +7,7 @@ import { PostsEntity } from './posts/posts.entity';
 
 @Module({
   imports: [
+    PostsModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: '175.24.115.95',
@@ -14,10 +15,9 @@ import { PostsEntity } from './posts/posts.entity';
       username: 'root',
       password: '123321.q',
       database: 'blog',
-      entities: [PostsEntity],
+      entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    PostsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
