@@ -1,5 +1,6 @@
 import { PostsService, PostsRo } from './posts.service';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { CreatePostDto } from './dto/create-post.dot';
 import {
   Body,
   Controller,
@@ -21,7 +22,7 @@ export class PostsController {
    */
   @ApiOperation({ summary: '创建文章' })
   @Post('create')
-  async create(@Body() post) {
+  async create(@Body() post: CreatePostDto) {
     console.log(1145454541);
     return await this.postsService.create(post);
   }
@@ -32,7 +33,6 @@ export class PostsController {
   @ApiOperation({ summary: '获取文章' })
   @Get('findAll')
   async findAll(@Query() query): Promise<PostsRo> {
-    console.log(query);
     return await this.postsService.findAll(query);
   }
 

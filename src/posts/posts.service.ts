@@ -30,17 +30,21 @@ export class PostsService {
 
   // 获取文章列表
   async findAll(query): Promise<PostsRo> {
-    const qb = await getRepository(PostsEntity).createQueryBuilder('post');
-    qb.where('1 = 1');
-    qb.orderBy('post.create_time', 'DESC');
+    const allViewedPhotos = await this.postsRepository.find({
+      where: { id: 4 },
+    });
+    console.log(allViewedPhotos, 444);
+    // qb.where('1 = 1');
+    // qb.orderBy('post.create_time', 'DESC');
 
-    const count = await qb.getCount();
-    const { pageNum = 1, pageSize = 10, ...params } = query;
-    qb.limit(pageSize);
-    qb.offset(pageSize * (pageNum - 1));
+    const count = allViewedPhotos.length;
+    // console.log(count);
+    // const { pageNum = 1, pageSize = 10 } = query;
+    // qb.limit(pageSize);
+    // qb.offset(pageSize * (pageNum - 1));
 
-    const posts = await qb.getMany();
-    return { list: posts, count: count };
+    // const posts = await qb.getMany();
+    return { list: allViewedPhotos, count: count };
   }
 
   // 获取指定文章
