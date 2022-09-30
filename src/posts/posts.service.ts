@@ -1,7 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { getRepository, Repository } from 'typeorm';
-import { PostsEntity } from './posts.entity';
+import { PostsEntity } from './entities/posts.entity';
 
 export interface PostsRo {
   list: PostsEntity[];
@@ -24,7 +24,8 @@ export class PostsService {
     if (doc) {
       throw new HttpException('文章已存在', 200);
     }
-    await this.postsRepository.save(post);
+    const data = await this.postsRepository.save(post);
+    console.log(data);
     return '保存成功';
   }
 
