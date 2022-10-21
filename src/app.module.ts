@@ -17,7 +17,7 @@ import { UserModule } from './user/user.module';
       password: '123321.q',
       database: 'blog',
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true,
     }),
     UserModule,
   ],

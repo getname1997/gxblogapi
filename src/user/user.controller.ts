@@ -1,25 +1,52 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+  Req,
+  Patch,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
+import { UserInfoDto } from './dto/user-info.dto';
+import { AuthGuard } from '@nestjs/passport';
 
+@ApiTags('用户')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @ApiOperation({ summary: '注册用户' })
+  @ApiResponse({ status: 201, type: UserInfoDto })
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Post('register')
+  register(@Body() createUser: CreateUserDto) {
+    return this.userService.register(createUser);
   }
 
+  @ApiOperation({ summary: '获取用户信息' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  async getUserInfo(@Req() req) {
+    return req.user;
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    return this.userService.findOne(id);
   }
 
   @Patch(':id')

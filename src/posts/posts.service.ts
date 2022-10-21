@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { PostsEntity } from './entities/posts.entity';
 
 export interface PostsRo {
@@ -32,7 +32,7 @@ export class PostsService {
   // 获取文章列表
   async findAll(query): Promise<PostsRo> {
     const allViewedPhotos = await this.postsRepository.find({
-      where: { id: 4 },
+      // where: { id: 4 },
     });
     console.log(allViewedPhotos, 444);
     // qb.where('1 = 1');
@@ -50,15 +50,21 @@ export class PostsService {
 
   // 获取指定文章
   async findById(id): Promise<PostsEntity> {
-    return await this.postsRepository.findOneById(id);
+    return await this.postsRepository.findOne({
+      where: { id },
+    });
   }
 
   // 更新文章
   async updateById(id, post): Promise<PostsEntity> {
-    const existPost = await this.postsRepository.findOneById(id);
+    const existPost = await this.postsRepository.findOne({
+      where: { id },
+    });
     if (!existPost) {
       throw new HttpException(`id为${id}的文章不存在`, 200);
     }
+    post.create_time = existPost.create_time;
+    post.update_time = new Date();
     const updatePost = this.postsRepository.merge(existPost, post);
     return this.postsRepository.save(updatePost);
   }
