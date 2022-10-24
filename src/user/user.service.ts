@@ -25,7 +25,6 @@ export class UserService {
    */
   async register(createUser: CreateUserDto) {
     const { username } = createUser;
-    console.log(createUser);
     const user = await this.userRepository.findOne({
       where: { username },
     });
@@ -33,6 +32,7 @@ export class UserService {
       throw new HttpException('用户名已存在', HttpStatus.BAD_REQUEST);
     }
     const newUser = await this.userRepository.create(createUser);
+    console.log(createUser);
     return await this.userRepository.save(newUser);
   }
 
@@ -54,8 +54,6 @@ export class UserService {
       .addSelect('user.password')
       .where('user.username=:username', { username })
       .getOne();
-
-    console.log('existUser', existUser);
     if (
       !existUser ||
       !(await this.comparePassword(password, existUser.password))
