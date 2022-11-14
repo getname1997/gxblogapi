@@ -38,13 +38,6 @@ export class UserController {
 
   @ApiOperation({ summary: '获取用户信息' })
   @ApiBearerAuth()
-  @Post('login')
-  async login(@Body() user: Partial<CreateUserDto>) {
-    return this.userService.login(user);
-  }
-
-  @ApiOperation({ summary: '获取用户信息' })
-  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Get()
   async getUserInfo(@Req() req) {
