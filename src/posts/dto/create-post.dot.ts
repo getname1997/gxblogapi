@@ -16,3 +16,10 @@ export class CreatePostDto {
   @ApiProperty({ description: '类型' })
   readonly type: number;
 }
+
+export class GetBlogListPostDto {
+  @ApiProperty({ description: '标题' })
+  readonly title: string;
+  @ApiProperty({ description: '作者' })
+  readonly author: string;
+}

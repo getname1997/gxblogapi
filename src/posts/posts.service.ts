@@ -2,7 +2,6 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PostsEntity } from './entities/posts.entity';
-
 export interface PostsRo {
   list: PostsEntity[];
   count: number;
@@ -24,27 +23,28 @@ export class PostsService {
     if (doc) {
       throw new HttpException('文章已存在', 200);
     }
-    const data = await this.postsRepository.save(post);
-    console.log(data);
+    await this.postsRepository.save(post);
     return '保存成功';
   }
 
   // 获取文章列表
   async findAll(query): Promise<PostsRo> {
-    const allViewedPhotos = await this.postsRepository.find({
-      // where: { id: 4 },
-    });
-    console.log(allViewedPhotos, 444);
-    // qb.where('1 = 1');
-    // qb.orderBy('post.create_time', 'DESC');
+    const allViewedPhotos = await this.postsRepository.find({});
 
     const count = allViewedPhotos.length;
-    // console.log(count);
-    // const { pageNum = 1, pageSize = 10 } = query;
-    // qb.limit(pageSize);
-    // qb.offset(pageSize * (pageNum - 1));
+    return { list: allViewedPhotos, count: count };
+  }
 
-    // const posts = await qb.getMany();
+  async getBlogList(data): Promise<PostsRo> {
+    const allViewedPhotos = await this.postsRepository
+      .createQueryBuilder('posts')
+      .where('posts.title LIKE :title')
+      .setParameters({ title: `%${data.title}%` })
+      .andWhere('posts.author LIKE :author')
+      .setParameters({ author: `%${data.author}%` })
+      .getMany();
+
+    const count = allViewedPhotos.length;
     return { list: allViewedPhotos, count: count };
   }
 
@@ -56,22 +56,25 @@ export class PostsService {
   }
 
   // 更新文章
-  async updateById(id, post): Promise<PostsEntity> {
+  async updateById(id, post): Promise<string> {
+    const blogId = Number(post.id);
+
     const existPost = await this.postsRepository.findOne({
-      where: { id },
+      where: { id: blogId },
     });
     if (!existPost) {
       throw new HttpException(`id为${id}的文章不存在`, 200);
     }
+    console.log(blogId, 111);
     post.create_time = existPost.create_time;
     post.update_time = new Date();
-    const updatePost = this.postsRepository.merge(existPost, post);
-    return this.postsRepository.save(updatePost);
+    await this.postsRepository.update(post.id, post);
+    return '更新完成';
   }
 
   // 刪除文章
   async remove(id) {
-    console.log(11);
+    console.log(id, 'id');
     const existPost = await this.postsRepository.findOneById(id);
     if (!existPost) {
       throw new HttpException(`id为${id}的文章不存在`, 200);

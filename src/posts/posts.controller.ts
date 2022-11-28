@@ -1,6 +1,6 @@
 import { PostsService, PostsRo } from './posts.service';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
-import { CreatePostDto } from './dto/create-post.dot';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { CreatePostDto, GetBlogListPostDto } from './dto/create-post.dot';
 import {
   Body,
   Controller,
@@ -10,8 +10,11 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 @ApiTags('文章')
+@ApiBearerAuth()
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
@@ -39,10 +42,22 @@ export class PostsController {
    * 获取指定文章
    * @param id
    */
-  @Get(':id')
-  async findById(@Param('id') id) {
+  @Get('getBlog')
+  async findById(@Query('id') id) {
     console.log(id);
     return await this.postsService.findById(id);
+  }
+
+  /**
+   *  根据条件查找文章
+   * @param post
+   *
+   */
+  @ApiOperation({ summary: '查询文章' })
+  @UseGuards(AuthGuard('jwt'))
+  @Post('getBlogList')
+  async getBlogList(@Body() post: GetBlogListPostDto) {
+    return await this.postsService.getBlogList(post);
   }
 
   /**
@@ -50,17 +65,19 @@ export class PostsController {
    * @param id
    * @param post
    */
-  @Put(':id')
-  async update(@Param('id') id, @Body() post) {
+  @Put('update')
+  async update(@Query('id') id, @Body() post) {
     return await this.postsService.updateById(id, post);
   }
 
   /**
    * 删除
-   * @param id
+   * @Query id
    */
-  @Delete(':id')
-  async remove(@Param('id') id) {
-    return await this.postsService.remove(id);
+  @ApiOperation({ summary: '删除' })
+  @Delete('blog')
+  async remove(@Query('id') id, @Body() post) {
+    console.log(post.id);
+    return await this.postsService.remove(post.id);
   }
 }

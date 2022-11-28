@@ -24,6 +24,7 @@ import { UserInfoDto } from './dto/user-info.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('用户')
+@ApiBearerAuth()
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -37,7 +38,6 @@ export class UserController {
   }
 
   @ApiOperation({ summary: '获取用户信息' })
-  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Get()
   async getUserInfo(@Req() req) {

@@ -12,9 +12,6 @@ export class PostsEntity {
   @Column({ length: 20 })
   author: string;
 
-  @Column({ default: '' })
-  name: string;
-
   @Column('text')
   content: string;
 
