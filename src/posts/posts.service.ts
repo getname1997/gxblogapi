@@ -30,20 +30,19 @@ export class PostsService {
   // 获取文章列表
   async findAll(query): Promise<PostsRo> {
     const allViewedPhotos = await this.postsRepository.find({});
-
     const count = allViewedPhotos.length;
     return { list: allViewedPhotos, count: count };
   }
 
   async getBlogList(data): Promise<PostsRo> {
+    const { title = '', author = '' } = data;
     const allViewedPhotos = await this.postsRepository
       .createQueryBuilder('posts')
       .where('posts.title LIKE :title')
-      .setParameters({ title: `%${data.title}%` })
+      .setParameters({ title: `%${title}%` })
       .andWhere('posts.author LIKE :author')
-      .setParameters({ author: `%${data.author}%` })
+      .setParameters({ author: `%${author}%` })
       .getMany();
-
     const count = allViewedPhotos.length;
     return { list: allViewedPhotos, count: count };
   }
@@ -58,14 +57,12 @@ export class PostsService {
   // 更新文章
   async updateById(id, post): Promise<string> {
     const blogId = Number(post.id);
-
     const existPost = await this.postsRepository.findOne({
       where: { id: blogId },
     });
     if (!existPost) {
       throw new HttpException(`id为${id}的文章不存在`, 200);
     }
-    console.log(blogId, 111);
     post.create_time = existPost.create_time;
     post.update_time = new Date();
     await this.postsRepository.update(post.id, post);
