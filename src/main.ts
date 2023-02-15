@@ -4,8 +4,10 @@ import { TransformInterceptor } from './core/interceptor/transform.interceptor';
 import { HttpExceptionFilter } from './core/filter/http-exception.filter';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as dotenv from 'dotenv';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  dotenv.config();
   // app.setGlobalPrefix('api');
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new TransformInterceptor());

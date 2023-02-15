@@ -7,6 +7,7 @@ import { PostsModule } from './posts/posts.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { uploadModule } from './upload/upload.module';
+import { OpenaiModule } from './openai/openai.module';
 import envConfig from '../config/env';
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import envConfig from '../config/env';
     UserModule,
     AuthModule,
     uploadModule,
+    OpenaiModule,
   ],
   controllers: [AppController],
   providers: [AppService],

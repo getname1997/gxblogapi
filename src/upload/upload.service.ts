@@ -2,9 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UploadEntity } from './entities/upload.entity';
 import { Repository } from 'typeorm';
-import { PostsEntity } from '../posts/entities/posts.entity';
-import { createWriteStream } from 'fs';
-import { join } from 'path';
 @Injectable()
 export class UploadService {
   constructor(
