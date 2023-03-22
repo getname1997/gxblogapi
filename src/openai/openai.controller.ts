@@ -6,8 +6,8 @@ import {
   Patch,
   Param,
   Delete,
-  Req,
-} from '@nestjs/common';
+  Req, HttpCode, HttpStatus
+} from "@nestjs/common";
 import { OpenaiService } from './openai.service';
 import { CreateOpenaiDto } from './dto/create-openai.dto';
 import { UpdateOpenaiDto } from './dto/update-openai.dto';
@@ -16,6 +16,7 @@ import { UpdateOpenaiDto } from './dto/update-openai.dto';
 export class OpenaiController {
   constructor(private readonly openaiService: OpenaiService) {}
   @Post('getAnswer')
+  @HttpCode(HttpStatus.OK)
   async queryAnswer(@Body() post: CreateOpenaiDto) {
     console.log(post);
     return await this.openaiService.queryOpenai(post);

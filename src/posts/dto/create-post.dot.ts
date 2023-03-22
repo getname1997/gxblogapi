@@ -13,6 +13,9 @@ export class CreatePostDto {
   @ApiPropertyOptional({ description: '封面' })
   readonly cover_url: string;
 
+  @ApiPropertyOptional({ description: '分类' })
+  readonly classify: string;
+
   @ApiProperty({ description: '类型' })
   readonly type: number;
 }

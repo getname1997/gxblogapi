@@ -5,8 +5,10 @@ import { diskStorage } from 'multer';
 import { UploadService } from './upload.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UploadEntity } from './entities/upload.entity';
+import { PostsModule } from '../posts/posts.module';
 @Module({
   imports: [
+    PostsModule,
     MulterModule.register({
       storage: diskStorage({
         //自定义路径

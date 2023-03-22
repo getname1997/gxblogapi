@@ -5,37 +5,48 @@ import {
   Get,
   Res,
   Header,
-  StreamableFile,
   Query,
-  UploadedFile,
+  HttpCode,
+  HttpStatus,
   UploadedFiles,
   UseInterceptors,
-  Req,
 } from '@nestjs/common';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { UploadService } from './upload.service';
 import { Response } from 'express';
-import { createWriteStream, createReadStream } from 'fs';
-import { join } from 'path';
+import multer = require('multer');
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { PostsService } from '../posts/posts.service';
 @Controller('upload')
+@ApiBearerAuth()
 export class UploadController {
-  constructor(private readonly UploadService: UploadService) {}
+  constructor(
+    private readonly UploadService: UploadService,
+    private readonly postsService: PostsService,
+  ) {}
   @Post('up')
-  @UseInterceptors(FilesInterceptor('file'))
+  @HttpCode(HttpStatus.OK)
+  @Header('Content-Type', 'text/plain;charset=UTF-8')
+  @ApiOperation({ summary: '上传' })
+  @UseInterceptors(
+    FilesInterceptor('file', 1, {
+      storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+          cb(null, './fileUpload/');
+        },
+        filename: (req, file, cd) => {
+          cd(null, decodeURI(file.originalname));
+          return;
+        },
+      }),
+    }),
+  )
   async uploadFile(@UploadedFiles() file: Express.Multer.File, @Body() body) {
-    return this.UploadService.uploadFile(file, body);
+    return this.UploadService.uploadFile(file, body, this.postsService);
   }
 
   @Get()
-  getFile(
-    @Res({ passthrough: true }) res: Response,
-    @Query() query,
-  ): StreamableFile {
-    const file = createReadStream(join(process.cwd(), 'fileUpload', '2.js'));
-    res.set({
-      'Content-Type': 'application/json',
-      'Content-Disposition': 'attachment;',
-    });
-    return new StreamableFile(file);
+  getFile(@Res({ passthrough: true }) res: Response, @Query() query) {
+    return this.UploadService.getFileData(query.path);
   }
 }
