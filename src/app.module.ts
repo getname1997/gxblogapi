@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { uploadModule } from './upload/upload.module';
 import { OpenaiModule } from './openai/openai.module';
+import { EnumModule } from './enum/enum.module';
 import envConfig from '../config/env';
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import envConfig from '../config/env';
     AuthModule,
     uploadModule,
     OpenaiModule,
+    EnumModule,
   ],
   controllers: [AppController],
   providers: [AppService],

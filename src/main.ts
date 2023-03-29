@@ -15,7 +15,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('博客管理')
     .setDescription('博客接口文档')
-    .setVersion('1.0')
+    .setVersion('0.1')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);

@@ -6,7 +6,6 @@ import {
   Controller,
   Delete,
   Get,
-  Param,
   Post,
   Put,
   Query,
@@ -16,6 +15,7 @@ import { AuthGuard } from '@nestjs/passport';
 @ApiTags('文章')
 @ApiBearerAuth()
 @Controller('posts')
+@UseGuards(AuthGuard('jwt'))
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
@@ -42,6 +42,7 @@ export class PostsController {
    * 获取指定文章
    * @param id
    */
+  @ApiOperation({ summary: '获取指定文章' })
   @Get('getBlog')
   async findById(@Query('id') id) {
     console.log(id);
@@ -54,7 +55,6 @@ export class PostsController {
    *
    */
   @ApiOperation({ summary: '查询文章' })
-  @UseGuards(AuthGuard('jwt'))
   @Post('getBlogList')
   async getBlogList(@Body() post: GetBlogListPostDto) {
     return await this.postsService.getBlogList(post);
