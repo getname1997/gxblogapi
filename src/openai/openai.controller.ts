@@ -6,8 +6,10 @@ import {
   Patch,
   Param,
   Delete,
-  Req, HttpCode, HttpStatus
-} from "@nestjs/common";
+  Req,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { OpenaiService } from './openai.service';
 import { CreateOpenaiDto } from './dto/create-openai.dto';
 import { UpdateOpenaiDto } from './dto/update-openai.dto';

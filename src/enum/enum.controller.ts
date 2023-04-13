@@ -3,8 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
-  Param,
   Delete,
   UseGuards,
   HttpCode,
@@ -13,10 +11,9 @@ import {
   Put,
 } from '@nestjs/common';
 import { EnumService } from './enum.service';
-import { UpdateEnumDto } from './dto/update-enum.dto';
+import { CreateEnumDto } from './dto/create-enum.dto';
 import { CreateEnumTypeDto } from './dto/createType-enum.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { EnumEntity } from './entities/enum.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('enum')
@@ -24,6 +21,13 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 @UseGuards(AuthGuard('jwt')) // 验证token/**/
 export class EnumController {
   constructor(private readonly enumService: EnumService) {}
+
+  @Get('getEnumType')
+  @ApiOperation({ summary: '获取type' })
+  @HttpCode(HttpStatus.OK)
+  getEnumType() {
+    return this.enumService.getEnumType();
+  }
 
   @Post('createType')
   @ApiOperation({ summary: '创建type' })
@@ -45,28 +49,30 @@ export class EnumController {
     return this.enumService.updateEnumType(EnumTypeEntity);
   }
 
-  @Post()
-  create(@Body() EnumEntity: EnumEntity) {
-    return this.enumService.create(EnumEntity);
+  @Post('addEnum')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: '添加枚举' })
+  create(@Body() EnumEntitys: CreateEnumDto) {
+    return this.enumService.create(EnumEntitys);
   }
 
-  @Get()
-  findAll() {
-    return this.enumService.findAll();
+  @Get('getEnum')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: '根据id获取对应枚举对象' })
+  getEnum(@Query('type') type: string) {
+    return this.enumService.getEnum(type);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.enumService.findOne(+id);
+  @Delete('deleteEnum')
+  @ApiOperation({ summary: '单个删除枚举' })
+  deleteTEnum(@Query('id') id: string) {
+    return this.enumService.deleteTEnum(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEnumDto: UpdateEnumDto) {
-    return this.enumService.update(+id, updateEnumDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.enumService.remove(+id);
+  @Put('updateEnum')
+  @ApiOperation({ summary: '更新枚举' })
+  @HttpCode(HttpStatus.OK)
+  updateEnum(@Body() EnumEntity: CreateEnumDto) {
+    return this.enumService.updateEnum(EnumEntity);
   }
 }

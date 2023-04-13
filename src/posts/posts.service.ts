@@ -56,7 +56,7 @@ export class PostsService {
 
   // 更新文章
   async updateById(id, post): Promise<string> {
-    const blogId = Number(post.id);
+    const blogId = post.id;
     const existPost = await this.postsRepository.findOne({
       where: { id: blogId },
     });

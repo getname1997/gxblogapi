@@ -3,8 +3,8 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('posts')
 export class PostsEntity {
-  @PrimaryGeneratedColumn()
-  id: number; // 标记为主列，值自动生成
+  @PrimaryGeneratedColumn('uuid')
+  id: string; // 标记为主列，值自动生成
 
   @Column({ length: 50 })
   title: string;

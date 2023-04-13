@@ -1,8 +1,8 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity('Enum')
 export class EnumEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ length: 50 })
   name: string;
@@ -10,10 +10,10 @@ export class EnumEntity {
   @Column({ length: 50 })
   value: string;
 
-  @Column({ length: 50 })
+  @Column({ length: 100 })
   type: string;
 
-  @Column({ length: 50 })
+  @Column({ length: 500 })
   description: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

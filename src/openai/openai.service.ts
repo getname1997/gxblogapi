@@ -13,7 +13,7 @@ export class OpenaiService {
     const response = await openai.createCompletion({
       model: 'text-davinci-003',
       prompt: prompt,
-      temperature: 0.8, // 每次返回的答案的相似度0-1（0：每次都一样，1：每次都不一样）
+      temperature: 0.6, // 每次返回的答案的相似度0-1（0：每次都一样，1：每次都不一样）
       max_tokens: 4000,
     });
     return response.data.choices[0].text;
