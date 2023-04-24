@@ -11,6 +11,9 @@ export class CreateEnumDto {
   @ApiPropertyOptional({ description: '枚举类型' })
   readonly type: string;
 
+  @ApiPropertyOptional({ description: '类型id' })
+  readonly type_id: string;
+
   @ApiPropertyOptional({ description: '备注' })
   readonly description: string;
 }

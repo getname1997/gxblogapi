@@ -13,6 +13,9 @@ export class EnumEntity {
   @Column({ length: 100 })
   type: string;
 
+  @Column({ length: 100 })
+  type_id: string;
+
   @Column({ length: 500 })
   description: string;
 

@@ -59,8 +59,8 @@ export class EnumController {
   @Get('getEnum')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: '根据id获取对应枚举对象' })
-  getEnum(@Query('type') type: string) {
-    return this.enumService.getEnum(type);
+  getEnum(@Query('id') id: string) {
+    return this.enumService.getEnum(id);
   }
 
   @Delete('deleteEnum')

@@ -48,7 +48,7 @@ export class EnumService {
   }
   async getEnum(id: string) {
     return await this.EnumService.find({
-      where: { id },
+      where: { type_id: id },
     });
   }
   async create(createEnumDto: Partial<CreateEnumDto>) {
