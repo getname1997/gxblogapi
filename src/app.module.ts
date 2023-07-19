@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { uploadModule } from './upload/upload.module';
 import { OpenaiModule } from './openai/openai.module';
 import { EnumModule } from './enum/enum.module';
+import { dailyListModel } from './dailyList/dailyList.module';
 import envConfig from '../config/env';
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import envConfig from '../config/env';
     uploadModule,
     OpenaiModule,
     EnumModule,
+    dailyListModel,
   ],
   controllers: [AppController],
   providers: [AppService],
