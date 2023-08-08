@@ -1,14 +1,10 @@
-import {
-  Injectable,
-  HttpException,
-  HttpStatus,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { dailyList } from './entities/dailyList.entities';
 import { Repository } from 'typeorm';
 import * as dayjs from 'dayjs';
 import { HttpService } from '@nestjs/axios';
+import { Cron } from '@nestjs/schedule';
 @Injectable()
 export class DailyListService {
   constructor(
@@ -17,7 +13,13 @@ export class DailyListService {
 
     private httpService: HttpService,
   ) {}
+  @Cron('15 * * * * *')
+  getHello(): string {
+    console.log('每分钟的第15秒执行一次');
+    return 'Hello World!';
+  }
 
+  @Cron('0 15 8 * * *')
   async getDaily() {
     const timeString = dayjs().format('YYYY-MM-DD');
     const Daily = await this.UserDailyList.findOne({
@@ -33,6 +35,7 @@ export class DailyListService {
         thumb_url: data.tp,
       };
       await this.UserDailyList.save(params);
+      return params;
     }
     return Daily;
   }

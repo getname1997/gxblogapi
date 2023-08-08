@@ -10,6 +10,7 @@ import { uploadModule } from './upload/upload.module';
 import { OpenaiModule } from './openai/openai.module';
 import { EnumModule } from './enum/enum.module';
 import { dailyListModel } from './dailyList/dailyList.module';
+import { ScheduleModule } from '@nestjs/schedule';
 import envConfig from '../config/env';
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import envConfig from '../config/env';
     OpenaiModule,
     EnumModule,
     dailyListModel,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],
