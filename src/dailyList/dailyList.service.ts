@@ -15,7 +15,6 @@ export class DailyListService {
   ) {}
   @Cron('15 * * * * *')
   getHello(): string {
-    console.log('每分钟的第15秒执行一次');
     return 'Hello World!';
   }
 
